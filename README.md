@@ -2,7 +2,7 @@
 
 Paranoid text spacing in Racket.
 
-Port of [`vinta/pangu.py`](https://github.com/vinta/pangu.py).
+Nearly a direct port of the official Python version ([`vinta/pangu.py`](https://github.com/vinta/pangu.py)).
 
 ## Install
 
