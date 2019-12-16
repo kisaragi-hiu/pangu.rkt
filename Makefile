@@ -23,5 +23,5 @@ clean:
 check-deps:
 	raco setup --no-docs $(DEPS-FLAGS) $(PACKAGE-NAME)
 
-test: install
+test:
 	raco test -x -p $(PACKAGE-NAME)
