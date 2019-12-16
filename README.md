@@ -1,14 +1,18 @@
 # pangu.rkt
 
-Paranoid text spacing in Racket. Port of [`vinta/pangu.py`](https://github.com/vinta/pangu.py).
+Paranoid text spacing in Racket. Work in progress; not working yet.
 
-## Install
+Port of [`vinta/pangu.py`](https://github.com/vinta/pangu.py).
 
-<!--```
-raco pkg install pangu
-```-->
+<!-- ## Install -->
 
-## Usage
+<!-- After cloning: -->
+
+<!-- ``` -->
+<!-- raco pkg install --name pangu -->
+<!-- ``` -->
+
+## Usage (once done)
 
 ```racket
 (require pangu)
