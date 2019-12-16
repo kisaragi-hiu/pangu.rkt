@@ -188,12 +188,12 @@
              (check-equal? (spacing "前面:I have no idea後面") "前面：I have no idea 後面")
              (check-equal? (spacing "前面: I have no idea後面") "前面: I have no idea 後面"))
   (test-case "comma"
-             (check-equal? (spacing "前面,後面" "前面，後面"))
-             (check-equal? (spacing "前面 , 後面" "前面，後面"))
-             (check-equal? (spacing "前面, 後面" "前面，後面"))
-             (check-equal? (spacing "前面 ,後面" "前面，後面"))
-             (check-equal? (spacing "前面," "前面，"))
-             (check-equal? (spacing "前面, " "前面，")))
+             (check-equal? (spacing "前面,後面") "前面，後面")
+             (check-equal? (spacing "前面 , 後面") "前面，後面")
+             (check-equal? (spacing "前面, 後面") "前面，後面")
+             (check-equal? (spacing "前面 ,後面") "前面，後面")
+             (check-equal? (spacing "前面,") "前面，")
+             (check-equal? (spacing "前面, ") "前面，"))
   (test-case "period"
              (check-equal? (spacing "前面.後面") "前面。後面")
              (check-equal? (spacing "前面 . 後面") "前面。後面")
