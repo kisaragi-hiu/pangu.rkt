@@ -1,4 +1,4 @@
-#lang axe
+#lang racket
 ;; Paranoid text spacing in Racket
 ;; Port of pangu.py: https://github.com/vinta/pangu.py
 
@@ -9,7 +9,7 @@
 ;;; Regex definitions
 (define cjk "\u2e80-\u2eff\u2f00-\u2fdf\u3040-\u309f\u30a0-\u30fa\u30fc-\u30ff\u3100-\u312f\u3200-\u32ff\u3400-\u4dbf\u4e00-\u9fff\uf900-\ufaff")
 
-(define any-cjk (regexp (format r"[~a]" cjk)))
+(define any-cjk (regexp (format "[~a]" cjk)))
 
 ;; there is an extra non-capturing group compared to JavaScript version
 (define convert-to-fullwidth-cjk-symbols-cjk
@@ -45,9 +45,9 @@
   (regexp (format "([A-Za-z0-9])([-\\+\\*/=&\\\\|<>])([~a])" cjk)))
 
 (define fix-slash-as
-  (regexp r"([/]) ([a-z\-_\./]+)"))
+  #rx"([/]) ([-a-z_\\./]+)")
 (define fix-slash-as-slash
-  (regexp r"([/\.])([A-Za-z\-_\./]+) ([/])"))
+  #rx"([/\\.])([-A-Za-z_\\./]+) ([/])")
 
 (define cjk-left-bracket
   (regexp (format "([~a])([\\(\\[{<>\u201c])" cjk)))
@@ -76,13 +76,13 @@
 (define middle-dot (regexp "([ ]*)([\u00b7\u2022\u2027])([ ]*)"))
 
 ;; Python version only
-(define tildes (regexp r'~+'))
-(define exclamation-marks (regexp r'!+'))
-(define semicolons (regexp r";+"))
-(define colons (regexp r":+"))
-(define commas (regexp r",+"))
-(define periods (regexp r"\.+"))
-(define question-marks #r"\?+")
+(define tildes #rx"~+")
+(define exclamation-marks #rx"!+")
+(define semicolons #rx";+")
+(define colons #rx":+")
+(define commas #rx",+")
+(define periods #rx"\\.+")
+(define question-marks #rx"\\?+")
 
 ;;; Functions
 
@@ -119,31 +119,31 @@
       (return text))
     (let* ((text (to-fullwidth-symbols convert-to-fullwidth-cjk-symbols-cjk text))
            (text (to-fullwidth-symbols convert-to-fullwidth-cjk-symbols text))
-           (text (regexp-replace* dots-cjk text r'\1 \2'))
-           (text (regexp-replace* fix-cjk-colon-ans text r'\1：\2'))
-           (text (regexp-replace* cjk-quote text r'\1 \2'))
-           (text (regexp-replace* quote-cjk text r'\1 \2'))
-           (text (regexp-replace* fix-quote-any-quote text r'\1\3\5'))
-           (text (regexp-replace* cjk-single-quote-but-possessive text r'\1 \2'))
-           (text (regexp-replace* single-quote-cjk text r'\1 \2'))
-           (text (regexp-replace* fix-possessive-single-quote text r"\1's"))
-           (text (regexp-replace* hash-ans-cjk-hash text r'\1 \2\3\4 \5'))
-           (text (regexp-replace* cjk-hash text r'\1 \2'))
-           (text (regexp-replace* hash-cjk text r'\1 \3'))
-           (text (regexp-replace* cjk-operator-ans text r'\1 \2 \3'))
-           (text (regexp-replace* ans-operator-cjk text r'\1 \2 \3'))
-           (text (regexp-replace* fix-slash-as text r'\1\2'))
-           (text (regexp-replace* fix-slash-as-slash text r'\1\2\3'))
-           (text (regexp-replace* cjk-left-bracket text r'\1 \2'))
-           (text (regexp-replace* right-bracket-cjk text r'\1 \2'))
-           (text (regexp-replace* fix-left-bracket-any-right-bracket text r'\1\3\5'))
-           (text (regexp-replace* ans-cjk-left-bracket-any-right-bracket text r'\1 \2\3\4'))
-           (text (regexp-replace* left-bracket-any-right-bracket-ans-cjk text r'\1\2\3 \4'))
-           (text (regexp-replace* an-left-bracket text r'\1 \2'))
-           (text (regexp-replace* right-bracket-an text r'\1 \2'))
-           (text (regexp-replace* cjk-ans text r'\1 \2'))
-           (text (regexp-replace* ans-cjk text r'\1 \2'))
-           (text (regexp-replace* s-a text r'\1 \2'))
+           (text (regexp-replace* dots-cjk text "\\1 \\2"))
+           (text (regexp-replace* fix-cjk-colon-ans text "\\1：\\2"))
+           (text (regexp-replace* cjk-quote text "\\1 \\2"))
+           (text (regexp-replace* quote-cjk text "\\1 \\2"))
+           (text (regexp-replace* fix-quote-any-quote text "\\1\\3\\5"))
+           (text (regexp-replace* cjk-single-quote-but-possessive text "\\1 \\2"))
+           (text (regexp-replace* single-quote-cjk text "\\1 \\2"))
+           (text (regexp-replace* fix-possessive-single-quote text "\\1's"))
+           (text (regexp-replace* hash-ans-cjk-hash text "\\1 \\2\\3\\4 \\5"))
+           (text (regexp-replace* cjk-hash text "\\1 \\2"))
+           (text (regexp-replace* hash-cjk text "\\1 \\3"))
+           (text (regexp-replace* cjk-operator-ans text "\\1 \\2 \\3"))
+           (text (regexp-replace* ans-operator-cjk text "\\1 \\2 \\3"))
+           (text (regexp-replace* fix-slash-as text "\\1\\2"))
+           (text (regexp-replace* fix-slash-as-slash text "\\1\\2\\3"))
+           (text (regexp-replace* cjk-left-bracket text "\\1 \\2"))
+           (text (regexp-replace* right-bracket-cjk text "\\1 \\2"))
+           (text (regexp-replace* fix-left-bracket-any-right-bracket text "\\1\\3\\5"))
+           (text (regexp-replace* ans-cjk-left-bracket-any-right-bracket text "\\1 \\2\\3\\4"))
+           (text (regexp-replace* left-bracket-any-right-bracket-ans-cjk text "\\1\\2\\3 \\4"))
+           (text (regexp-replace* an-left-bracket text "\\1 \\2"))
+           (text (regexp-replace* right-bracket-an text "\\1 \\2"))
+           (text (regexp-replace* cjk-ans text "\\1 \\2"))
+           (text (regexp-replace* ans-cjk text "\\1 \\2"))
+           (text (regexp-replace* s-a text "\\1 \\2"))
            (text (regexp-replace* middle-dot text "・")))
       (string-trim text))))
 
