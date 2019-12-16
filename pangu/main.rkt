@@ -100,13 +100,16 @@
 (define (spacing text)
   ;; https://github.com/vinta/pangu.py/blob/89407cf08dedf9d895c13053dd518d11a20f6c95/pangu.py#L97
   ;; this is probably not useful for other regexps.
-  (define (to-fullwidth-symbols regexp text)
-    (match (regexp-match regexp text)
-      ((cons old new)
-       (to-fullwidth-symbols
-        regexp
-        (string-replace text old (apply ~a (map convert-to-fullwidth new)))))
-      (#f text)))
+  (define (to-fullwidth-symbols regexp text [prev #f])
+    (if (equal? text prev)
+        text
+        (match (regexp-match regexp text)
+          ((cons old new)
+           (to-fullwidth-symbols
+            regexp
+            (string-replace text old (apply ~a (map convert-to-fullwidth new)))
+            text))
+          (#f text))))
   ;; sure...
   ;; Return prematurely from function in Racket:
   ;; https://stackoverflow.com/questions/25523522
