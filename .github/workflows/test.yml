@@ -11,7 +11,6 @@ jobs:
       matrix:
         racket_version:
           - "stable"
-          - "current"
     steps:
       - uses: actions/checkout@v3
       - name: Install Racket
@@ -26,8 +25,3 @@ jobs:
       - name: Test
         run: |
           raco test -x -p pangu
-      - name: Coverage
-        run: |
-          raco setup --check-pkg-deps --pkgs pangu
-          raco pkg install --auto cover cover-coveralls
-          raco cover -b -f coveralls -d coverage .
