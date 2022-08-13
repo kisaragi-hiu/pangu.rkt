@@ -1,0 +1,33 @@
+name: "CI"
+
+on:
+  - push
+
+jobs:
+  "test":
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        racket_version:
+          - "stable"
+          - "current"
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Racket
+        uses: Bogdanp/setup-racket@v1.1
+        with:
+          architecture: "x64"
+          distribution: "full"
+          version: ${{ matrix.racket_version }}
+      - name: Install
+        run: |
+          raco pkg install --auto --name pangu
+      - name: Test
+        run: |
+          raco test -x -p pangu
+      - name: Coverage
+        run: |
+          raco setup --check-pkg-deps --pkgs pangu
+          raco pkg install --auto cover cover-coveralls
+          raco cover -b -f coveralls -d coverage .
